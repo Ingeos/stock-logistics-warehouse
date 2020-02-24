@@ -12,6 +12,13 @@ class StockMoveLocationWizardLine(models.TransientModel):
     _name = "wiz.stock.move.location.line"
     _description = 'Wizard move location line'
 
+    move_location_wizard_id = fields.Many2many(
+        string="Move location Wizard",
+        comodel_name="wiz.stock.move.location",
+        column1='move_location_line_wiz_id',
+        column2='move_location_wiz_id',
+        readonly=True,
+    )
     product_id = fields.Many2one(
         string="Product",
         comodel_name="product.product",
@@ -94,14 +101,18 @@ class StockMoveLocationWizardLine(models.TransientModel):
     @api.multi
     def _get_move_line_values(self, picking, move):
         self.ensure_one()
-        location_dest_id = self.destination_location_id.get_putaway_strategy(
-            self.product_id).id or self.destination_location_id.id
+        location_dest_id = (
+            self.move_location_wizard_id.apply_putaway_strategy and
+            self.destination_location_id.get_putaway_strategy(
+                self.product_id).id or self.destination_location_id.id)
+        qty_todo, qty_done = self._get_available_quantity()
         return {
             "product_id": self.product_id.id,
             "lot_id": self.lot_id.id,
             "location_id": self.origin_location_id.id,
             "location_dest_id": location_dest_id,
-            "qty_done": self._get_available_quantity(),
+            "product_uom_qty": qty_todo,
+            "qty_done": qty_done,
             "product_uom_id": self.product_uom_id.id,
             "picking_id": picking.id,
             "move_id": move.id,
@@ -117,7 +128,7 @@ class StockMoveLocationWizardLine(models.TransientModel):
             return 0
         if self.env.context.get("planned"):
             # for planned transfer we don't care about the amounts at all
-            return 0.0
+            return self.move_quantity, 0
         search_args = [
             ('location_id', '=', self.origin_location_id.id),
             ('product_id', '=', self.product_id.id),
@@ -137,4 +148,4 @@ class StockMoveLocationWizardLine(models.TransientModel):
             available_qty, self.move_quantity, rounding) == -1
         if available_qty_lt_move_qty:
             return available_qty
-        return self.move_quantity
+        return 0, self.move_quantity
