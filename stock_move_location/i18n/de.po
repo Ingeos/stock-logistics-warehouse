@@ -62,7 +62,6 @@ msgstr "Ziellagerort"
 #. module: stock_move_location
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location__destination_location_disable
 #, fuzzy
-#| msgid "Destination Location"
 msgid "Destination Location Disable"
 msgstr "Ziellagerort"
 
@@ -76,9 +75,13 @@ msgstr "Anzeigename"
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location__edit_locations
 #: model_terms:ir.ui.view,arch_db:stock_move_location.view_wiz_stock_move_location_form_stock_move_location
 #, fuzzy
-#| msgid "Origin Location"
 msgid "Edit Locations"
 msgstr "Quelllagerort"
+
+#. module: stock_move_location
+#: model_terms:ir.ui.view,arch_db:stock_move_location.view_picking_form
+msgid "Fill with stock"
+msgstr ""
 
 #. module: stock_move_location
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location__id
@@ -157,6 +160,12 @@ msgid "Move to location..."
 msgstr "Zu Lagerort bewegen..."
 
 #. module: stock_move_location
+#: code:addons/stock_move_location/models/stock_picking.py:37
+#, python-format
+msgid "Moves lines already exists"
+msgstr ""
+
+#. module: stock_move_location
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location__origin_location_id
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location_line__origin_location_id
 msgid "Origin Location"
@@ -165,7 +174,6 @@ msgstr "Quelllagerort"
 #. module: stock_move_location
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location__origin_location_disable
 #, fuzzy
-#| msgid "Origin Location"
 msgid "Origin Location Disable"
 msgstr "Quelllagerort"
 
@@ -184,6 +192,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_move_location.view_wiz_stock_move_location_form_stock_move_location
 msgid "Planned Transfer"
 msgstr "Geplante Bewegung"
+
+#. module: stock_move_location
+#: code:addons/stock_move_location/models/stock_picking.py:35
+#, python-format
+msgid "Please choose a source end location"
+msgstr ""
 
 #. module: stock_move_location
 #: model:ir.model.fields,field_description:stock_move_location.field_wiz_stock_move_location_line__product_id
@@ -218,6 +232,12 @@ msgid "Stock Move"
 msgstr "Lagerbewegung"
 
 #. module: stock_move_location
+#: model:ir.model,name:stock_move_location.model_stock_picking
+#, fuzzy
+msgid "Transfer"
+msgstr "Geplante Bewegung"
+
+#. module: stock_move_location
 #: model_terms:ir.ui.view,arch_db:stock_move_location.view_wiz_stock_move_location_form_stock_move_location
 msgid "UoM"
 msgstr "Einheit"
@@ -230,14 +250,12 @@ msgstr "Ist diese Bewegung Teil der Lagerortbewegungen"
 #. module: stock_move_location
 #: model:ir.model,name:stock_move_location.model_wiz_stock_move_location
 #, fuzzy
-#| msgid "Part of move location"
 msgid "Wizard move location"
 msgstr "Teil der Lagerortbewegung"
 
 #. module: stock_move_location
 #: model:ir.model,name:stock_move_location.model_wiz_stock_move_location_line
 #, fuzzy
-#| msgid "Move Location lines"
 msgid "Wizard move location line"
 msgstr "Lagerort Buchungszeilen"
 
