@@ -15,6 +15,7 @@ setuptools.setup(
         'odoo12-addon-sale_stock_info_popup',
         'odoo12-addon-stock_account_change_qty_reason',
         'odoo12-addon-stock_account_internal_move',
+        'odoo12-addon-stock_account_inventory_discrepancy',
         'odoo12-addon-stock_account_inventory_force_date',
         'odoo12-addon-stock_archive_constraint',
         'odoo12-addon-stock_available',
@@ -43,6 +44,7 @@ setuptools.setup(
         'odoo12-addon-stock_location_template',
         'odoo12-addon-stock_location_zone',
         'odoo12-addon-stock_move_location',
+        'odoo12-addon-stock_move_packaging_qty',
         'odoo12-addon-stock_mts_mto_rule',
         'odoo12-addon-stock_orderpoint_generator',
         'odoo12-addon-stock_orderpoint_manual_procurement',
@@ -79,5 +81,6 @@ setuptools.setup(
     classifiers=[
         'Programming Language :: Python',
         'Framework :: Odoo',
+        'Framework :: Odoo :: 12.0',
     ]
 )
