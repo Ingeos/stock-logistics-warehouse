@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-10 05:35+0000\n"
-"PO-Revision-Date: 2017-06-10 05:35+0000\n"
-"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2017\n"
+"PO-Revision-Date: 2023-04-11 09:41+0000\n"
+"Last-Translator: Matjaz Mozetic <matjaz@luxim.si>\n"
 "Language-Team: Slovenian (https://www.transifex.com/oca/teams/23907/sl/)\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. module: stock_cycle_count
 #: code:addons/stock_cycle_count/models/stock_cycle_count_rule.py:67
@@ -65,7 +66,7 @@ msgstr ""
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count__message_needaction
 msgid "Action Needed"
-msgstr "Potreben ukrep"
+msgstr "Potrebno ukrepanje"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count_rule__active
@@ -358,10 +359,10 @@ msgstr "Če označeno, zahtevajo nova sporočila vašo pozornost."
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,help:stock_cycle_count.field_stock_cycle_count__message_has_error
-#, fuzzy
-#| msgid "If checked, new messages require your attention."
 msgid "If checked, some messages have a delivery error."
-msgstr "Če označeno, zahtevajo nova sporočila vašo pozornost."
+msgstr ""
+"Če označeno pomeni, da je pri nekaterih sporočilih prišlo do napake pri "
+"dostavi."
 
 #. module: stock_cycle_count
 #: model_terms:ir.ui.view,arch_db:stock_cycle_count.stock_cycle_count_rule_form_view
@@ -390,19 +391,18 @@ msgstr ""
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count__inventory_adj_count
-#, fuzzy
 msgid "Inventory Adj Count"
-msgstr "Inventar"
+msgstr "Število popravkov inventarja"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count__stock_adjustment_ids
 msgid "Inventory Adjustment"
-msgstr ""
+msgstr "Popravek inventarja"
 
 #. module: stock_cycle_count
 #: model_terms:ir.ui.view,arch_db:stock_cycle_count.stock_cycle_count_form_view
 msgid "Inventory Adjustments"
-msgstr ""
+msgstr "Popravki inventarja"
 
 #. module: stock_cycle_count
 #: model:ir.model,name:stock_cycle_count.model_stock_location
@@ -411,9 +411,8 @@ msgstr "Lokacije inventarja"
 
 #. module: stock_cycle_count
 #: model_terms:ir.ui.view,arch_db:stock_cycle_count.view_inventory_graph
-#, fuzzy
 msgid "Inventory accuracy evolution"
-msgstr "Lokacije inventarja"
+msgstr "Razvoj natančnosti inventarja"
 
 #. module: stock_cycle_count
 #: model_terms:ir.ui.view,arch_db:stock_cycle_count.stock_cycle_count_form_view
@@ -496,10 +495,8 @@ msgstr "Število ukrepov"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count__message_has_error_counter
-#, fuzzy
-#| msgid "Number of Actions"
 msgid "Number of error"
-msgstr "Število ukrepov"
+msgstr "Število napak"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,help:stock_cycle_count.field_stock_warehouse__counts_for_accuracy_qty
@@ -509,14 +506,12 @@ msgstr ""
 #. module: stock_cycle_count
 #: model:ir.model.fields,help:stock_cycle_count.field_stock_cycle_count__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Število sporočil, ki zahtevajo ukrep"
+msgstr "Število sporočil, kjer je potrebno ukrepati"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,help:stock_cycle_count.field_stock_cycle_count__message_has_error_counter
-#, fuzzy
-#| msgid "Number of messages which requires an action"
 msgid "Number of messages with delivery error"
-msgstr "Število sporočil, ki zahtevajo ukrep"
+msgstr "Število sporočil z napako ob dostavi"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,help:stock_cycle_count.field_stock_cycle_count__message_unread_counter
@@ -598,9 +593,8 @@ msgstr "Stanje"
 
 #. module: stock_cycle_count
 #: model_terms:ir.ui.view,arch_db:stock_cycle_count.report_cyclecount
-#, fuzzy
 msgid "Status"
-msgstr "Stanje"
+msgstr "Status"
 
 #. module: stock_cycle_count
 #: model:ir.actions.act_window,name:stock_cycle_count.action_stock_cycle_count
@@ -648,7 +642,7 @@ msgstr "Neprebrana sporočila"
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Števec neprebranih sporočil"
+msgstr "Št. neprebranih sporočil"
 
 #. module: stock_cycle_count
 #: code:addons/stock_cycle_count/models/stock_cycle_count_rule.py:23
@@ -668,10 +662,8 @@ msgstr ""
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,field_description:stock_cycle_count.field_stock_cycle_count__website_message_ids
-#, fuzzy
-#| msgid "Messages"
 msgid "Website Messages"
-msgstr "Sporočila"
+msgstr "Sporočila spletne strani"
 
 #. module: stock_cycle_count
 #: model:ir.model.fields,help:stock_cycle_count.field_stock_cycle_count__website_message_ids
@@ -711,7 +703,7 @@ msgid "You cannot define a negative period."
 msgstr ""
 
 #. module: stock_cycle_count
-#: code:addons/stock_cycle_count/models/stock_inventory.py:60
+#: code:addons/stock_cycle_count/models/stock_inventory.py:91
 #, python-format
 msgid ""
 "You cannot modify the configuration of an Inventory Adjustment related to a "

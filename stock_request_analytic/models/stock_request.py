@@ -1,5 +1,5 @@
 # Copyright 2017 Eficent Business and IT Consulting Services, S.L.
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -10,6 +10,8 @@ class StockRequest(models.Model):
 
     analytic_account_id = fields.Many2one(
         'account.analytic.account', string='Analytic Account')
+    analytic_tag_ids = fields.Many2many(
+        'account.analytic.tag', string='Analytic Tags')
 
     @api.constrains('analytic_account_id')
     def _check_analytic_company_constrains(self):

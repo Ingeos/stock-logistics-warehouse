@@ -52,22 +52,32 @@ class AssignManualQuants(models.TransientModel):
         move._do_unreserve()
         for line in self.quants_lines:
             line._assign_quant_line()
-        # Auto-fill all lines as done
-        for ml in move.move_line_ids:
-            ml.qty_done = ml.product_qty
+        if move.picking_type_id.auto_fill_qty_done:
+            # Auto-fill all lines as done
+            for ml in move.move_line_ids:
+                ml.qty_done = ml.product_qty
         move._recompute_state()
         move.mapped('picking_id')._compute_state()
         return {}
 
     @api.model
-    def default_get(self, fields):
-        res = super(AssignManualQuants, self).default_get(fields)
-        move = self.env['stock.move'].browse(self.env.context['active_id'])
-        available_quants = self.env['stock.quant'].search([
+    def _domain_for_available_quants(self, move):
+        return [
             ('location_id', 'child_of', move.location_id.id),
             ('product_id', '=', move.product_id.id),
             ('quantity', '>', 0),
-        ])
+        ]
+
+    @api.model
+    def _get_available_quants(self, move):
+        domain = self._domain_for_available_quants(move)
+        return self.env['stock.quant'].search(domain)
+
+    @api.model
+    def default_get(self, fields):
+        res = super(AssignManualQuants, self).default_get(fields)
+        move = self.env['stock.move'].browse(self.env.context['active_id'])
+        available_quants = self._get_available_quants(move)
         quants_lines = []
         for quant in available_quants:
             line = {}

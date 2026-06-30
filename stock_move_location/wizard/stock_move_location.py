@@ -5,6 +5,7 @@
 
 from odoo import api, fields, models
 from odoo.fields import first
+from itertools import groupby
 
 
 class StockMoveLocationWizard(models.TransientModel):
@@ -77,17 +78,54 @@ class StockMoveLocationWizard(models.TransientModel):
         # Load data directly from quants
         quants = self.env['stock.quant'].browse(
             self.env.context.get('active_ids', False))
-        res['stock_move_location_line_ids'] = [(0, 0, {
-            'product_id': quant.product_id.id,
-            'move_quantity': quant.quantity,
-            'max_quantity': quant.quantity,
-            'origin_location_id': quant.location_id.id,
-            'lot_id': quant.lot_id.id,
-            'product_uom_id': quant.product_uom_id.id,
-            'custom': False,
-        }) for quant in quants]
+        res['stock_move_location_line_ids'] = self._prepare_wizard_move_lines(quants)
         res['origin_location_id'] = first(quants).location_id.id
         return res
+
+    @api.model
+    def _prepare_wizard_move_lines(self, quants):
+        res = []
+        exclude_reserved_qty = self.env.context.get('only_reserved_qty', False)
+        if not exclude_reserved_qty:
+            res = [(0, 0, {
+                'product_id': quant.product_id.id,
+                'move_quantity': quant.quantity,
+                'available_quantity': quant.quantity - quant.reserved_quantity,
+                'max_quantity': quant.quantity,
+                'origin_location_id': quant.location_id.id,
+                'lot_id': quant.lot_id.id,
+                'product_uom_id': quant.product_uom_id.id,
+                'custom': False,
+            }) for quant in quants]
+        else:
+            # if need move only available qty per product on location
+            for product, quant in groupby(quants, lambda r: r.product_id):
+                # we need only one quant per product
+                quant = list(quant)[0]
+                qty = quant._get_available_quantity(
+                    quant.product_id,
+                    quant.location_id,
+                )
+                if qty:
+                    res.append((0, 0, {
+                        'product_id': quant.product_id.id,
+                        'move_quantity': qty,
+                        'max_quantity': qty,
+                        'origin_location_id': quant.location_id.id,
+                        'lot_id': quant.lot_id.id,
+                        'product_uom_id': quant.product_uom_id.id,
+                        'custom': False,
+                    }))
+        return res
+
+    @api.onchange('picking_type_id')
+    def onchange_picking_type_id(self):
+        if self.picking_type_id and self.picking_type_id.suggest_available_qty:
+            for line in self.stock_move_location_line_ids:
+                line.move_quantity = line.available_quantity
+        else:
+            for line in self.stock_move_location_line_ids:
+                line.move_quantity = line.max_quantity
 
     @api.onchange('origin_location_id')
     def _onchange_origin_location_id(self):
@@ -167,7 +205,10 @@ class StockMoveLocationWizard(models.TransientModel):
     @api.multi
     def action_move_location(self):
         self.ensure_one()
-        picking = self._create_picking()
+        if not self.picking_id:
+            picking = self._create_picking()
+        else:
+            picking = self.picking_id
         self._create_moves(picking)
         if not self.env.context.get("planned"):
             picking.button_validate()
@@ -195,7 +236,8 @@ class StockMoveLocationWizard(models.TransientModel):
         # Using sql as search_group doesn't support aggregation functions
         # leading to overhead in queries to DB
         query = """
-            SELECT product_id, lot_id, SUM(quantity)
+            SELECT product_id, lot_id, SUM(quantity),
+                SUM(reserved_quantity) as qty_reserved
             FROM stock_quant
             WHERE location_id = %s
             AND company_id = %s
@@ -214,9 +256,14 @@ class StockMoveLocationWizard(models.TransientModel):
                 self.apply_putaway_strategy and
                 self.destination_location_id.get_putaway_strategy(product).id
                 or self.destination_location_id.id)
+            available_quantity = group.get("sum") - group.get("qty_reserved")
+            move_quantity = group.get("sum")
+            if self.picking_type_id.suggest_available_qty:
+                move_quantity = available_quantity
             product_data.append({
                 'product_id': product.id,
-                'move_quantity': group.get("sum"),
+                'move_quantity': move_quantity,
+                'available_quantity': available_quantity,
                 'max_quantity': group.get("sum"),
                 'origin_location_id': self.origin_location_id.id,
                 'destination_location_id': location_dest_id,

@@ -14,11 +14,18 @@ class StockQuant(models.Model):
         store=True,
     )
 
-    @api.depends('product_id', 'location_id', 'quantity', 'reserved_quantity')
+    unreserved_quantity = fields.Float(
+        string="Unreserved quantity",
+        compute="_compute_unreserved_quantity",
+        store=True,
+    )
+
+    @api.depends('unreserved_quantity')
     def _compute_contains_unreserved(self):
         for record in self:
-            available = record._get_available_quantity(
-                record.product_id,
-                record.location_id,
-            )
-            record.contains_unreserved = True if available > 0 else False
+            record.contains_unreserved = record.unreserved_quantity > 0
+
+    @api.depends('quantity', 'reserved_quantity')
+    def _compute_unreserved_quantity(self):
+        for rec in self:
+            rec.unreserved_quantity = rec.quantity - rec.reserved_quantity
